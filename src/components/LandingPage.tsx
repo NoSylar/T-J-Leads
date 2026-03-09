@@ -22,18 +22,21 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8">
           {['Proof', 'How it works', 'Contact'].map((item) => (
-            <a
+            <button
               key={item}
-              href={`#${item.toLowerCase().replace(' ', '-')}`}
-              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
+              onClick={() => document.getElementById(item.toLowerCase().replace(/ /g, '-'))?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors cursor-pointer"
             >
               {item}
-            </a>
+            </button>
           ))}
         </div>
 
         <div className="hidden md:block">
-          <button className="flex items-center gap-2 px-6 py-2.5 border border-orange-200 rounded-full text-sm font-semibold text-gray-800 hover:bg-orange-50 transition-all">
+          <button 
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="flex items-center gap-2 px-6 py-2.5 border border-orange-200 rounded-full text-sm font-semibold text-gray-800 hover:bg-orange-50 transition-all cursor-pointer"
+          >
             <Phone size={16} className="text-orange-500" />
             Speak to growth
           </button>
@@ -43,6 +46,34 @@ const Navbar = () => {
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-white border-b border-gray-100 p-6 space-y-4">
+          {['Proof', 'How it works', 'Contact'].map((item) => (
+            <button
+              key={item}
+              onClick={() => {
+                document.getElementById(item.toLowerCase().replace(/ /g, '-'))?.scrollIntoView({ behavior: 'smooth' });
+                setIsOpen(false);
+              }}
+              className="block w-full text-left text-lg font-medium text-gray-600 hover:text-gray-900"
+            >
+              {item}
+            </button>
+          ))}
+          <button 
+            onClick={() => {
+              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+              setIsOpen(false);
+            }}
+            className="flex items-center gap-2 w-full px-6 py-3 border border-orange-200 rounded-full text-sm font-semibold text-gray-800 hover:bg-orange-50 transition-all"
+          >
+            <Phone size={16} className="text-orange-500" />
+            Speak to growth
+          </button>
+        </div>
+      )}
     </nav>
   );
 };
@@ -76,10 +107,16 @@ const Hero = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button className="w-full sm:w-auto px-8 py-4 bg-racing-red text-white rounded-2xl font-bold text-sm hover:bg-red-700 transition-all shadow-lg shadow-red-200">
+            <button 
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="w-full sm:w-auto px-8 py-4 bg-racing-red text-white rounded-2xl font-bold text-sm hover:bg-red-700 transition-all shadow-lg shadow-red-200"
+            >
               Get vetted leads
             </button>
-            <button className="w-full sm:w-auto px-8 py-4 bg-white border border-gray-200 text-gray-700 rounded-2xl font-bold text-sm hover:bg-gray-50 transition-all">
+            <button 
+              onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+              className="w-full sm:w-auto px-8 py-4 bg-white border border-gray-200 text-gray-700 rounded-2xl font-bold text-sm hover:bg-gray-50 transition-all"
+            >
               See how we qualify
             </button>
           </div>
@@ -289,7 +326,17 @@ const Footer = () => {
       </div>
       <div className="flex justify-center gap-10 mb-8">
         {['Privacy', 'Terms', 'Methodology'].map(item => (
-          <a key={item} href="#" className="text-xs font-semibold text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest">{item}</a>
+          <button 
+            key={item} 
+            onClick={() => {
+              if (item === 'Methodology') {
+                document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="text-xs font-semibold text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest cursor-pointer"
+          >
+            {item}
+          </button>
         ))}
       </div>
       <p className="text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em]">
