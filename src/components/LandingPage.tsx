@@ -266,6 +266,18 @@ const HowItWorks = () => {
 };
 
 const Contact = () => {
+  const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [email, setEmail] = React.useState('');
+  const [company, setCompany] = React.useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, you'd send this to a backend or a service like Formspree
+    // For now, we'll simulate the submission to the requested email
+    console.log(`Sending info to tnj@photonflow-leads.com: Email: ${email}, Company: ${company}`);
+    setIsSubmitted(true);
+  };
+
   return (
     <section id="contact" className="py-32 px-6 bg-white">
       <div className="max-w-5xl mx-auto">
@@ -282,10 +294,13 @@ const Contact = () => {
               Share a few details. We'll reply within one business day with a tailored sample and next steps.
             </p>
             
-            <form className="flex flex-col sm:flex-row gap-4 items-end">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 items-end">
               <div className="w-full space-y-2">
                 <input 
                   type="email" 
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Work email" 
                   className="w-full bg-white border border-gray-200 rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-racing-red/20 focus:border-racing-red outline-none transition-all"
                 />
@@ -293,11 +308,17 @@ const Contact = () => {
               <div className="w-full space-y-2">
                 <input 
                   type="text" 
+                  required
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
                   placeholder="Company" 
                   className="w-full bg-white border border-gray-200 rounded-xl p-4 text-gray-900 focus:ring-2 focus:ring-racing-red/20 focus:border-racing-red outline-none transition-all"
                 />
               </div>
-              <button className="w-full sm:w-auto whitespace-nowrap px-8 py-4 bg-racing-red text-white rounded-xl font-bold text-sm hover:bg-red-700 transition-all shadow-lg shadow-red-100">
+              <button 
+                type="submit"
+                className="w-full sm:w-auto whitespace-nowrap px-8 py-4 bg-racing-red text-white rounded-xl font-bold text-sm hover:bg-red-700 transition-all shadow-lg shadow-red-100"
+              >
                 Get a vetted sample list
               </button>
             </form>
@@ -311,6 +332,37 @@ const Contact = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Success Popup */}
+      {isSubmitted && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/40 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-3xl p-10 max-w-md w-full text-center shadow-2xl"
+          >
+            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle2 size={32} />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Thank you, our team will be with you shortly!
+            </h3>
+            <p className="text-gray-500 mb-8">
+              We've received your request and will get back to you with your vetted sample list.
+            </p>
+            <button 
+              onClick={() => {
+                setIsSubmitted(false);
+                setEmail('');
+                setCompany('');
+              }}
+              className="w-full py-4 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all"
+            >
+              Close
+            </button>
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 };
